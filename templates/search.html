@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Search Videos{% endblock %}
+
+{% block content %}
+
+<div class="search-container">
+
+    <h1>🔍 Search Videos</h1>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search by video title..."
+        onkeyup="searchVideos()"
+    >
+
+    <br><br>
+
+    <div class="gallery-grid">
+
+        {% for video in videos %}
+
+        <div class="video-card">
+
+            <video controls width="100%">
+                <source src="{{ url_for('uploaded_file', filename=video[2]) }}">
+            </video>
+
+            <h3>{{ video[1] }}</h3>
+
+            <p>📂 {{ video[3] }}</p>
+
+            <a href="/edit/{{ video[0] }}" class="btn edit">
+                ✏ Edit
+            </a>
+
+        </div>
+
+        {% else %}
+
+        <h2>No videos found.</h2>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

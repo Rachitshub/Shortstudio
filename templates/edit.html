@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Video{% endblock %}
+
+{% block content %}
+
+<div class="edit-container">
+
+    <h1>✏ Edit Video</h1>
+
+    <form action="/edit/{{ video[0] }}" method="POST">
+
+        <label>Video Title</label>
+
+        <input
+            type="text"
+            name="title"
+            value="{{ video[1] }}"
+            required
+        >
+
+        <label>Category</label>
+
+        <select name="category" required>
+
+            <option value="Gaming"
+                {% if video[3]=="Gaming" %}selected{% endif %}>
+                Gaming
+            </option>
+
+            <option value="Status"
+                {% if video[3]=="Status" %}selected{% endif %}>
+                Status
+            </option>
+
+            <option value="Education"
+                {% if video[3]=="Education" %}selected{% endif %}>
+                Education
+            </option>
+
+            <option value="Technology"
+                {% if video[3]=="Technology" %}selected{% endif %}>
+                Technology
+            </option>
+
+            <option value="Entertainment"
+                {% if video[3]=="Entertainment" %}selected{% endif %}>
+                Entertainment
+            </option>
+
+            <option value="Music"
+                {% if video[3]=="Music" %}selected{% endif %}>
+                Music
+            </option>
+
+            <option value="Vlog"
+                {% if video[3]=="Vlog" %}selected{% endif %}>
+                Vlog
+            </option>
+
+            <option value="Other"
+                {% if video[3]=="Other" %}selected{% endif %}>
+                Other
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            💾 Save Changes
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

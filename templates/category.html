@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+
+<div class="category-container">
+
+    <h1>📂 Video Categories</h1>
+
+    <div class="category-buttons">
+
+        <button onclick="filterCategory('All')">All</button>
+        <button onclick="filterCategory('Gaming')">🎮 Gaming</button>
+        <button onclick="filterCategory('Status')">💖 Status</button>
+        <button onclick="filterCategory('Education')">📚 Education</button>
+        <button onclick="filterCategory('Technology')">💻 Technology</button>
+        <button onclick="filterCategory('Entertainment')">🎬 Entertainment</button>
+        <button onclick="filterCategory('Music')">🎵 Music</button>
+        <button onclick="filterCategory('Vlog')">📹 Vlog</button>
+        <button onclick="filterCategory('Other')">📦 Other</button>
+
+    </div>
+
+    <div class="gallery-grid">
+
+        {% for video in videos %}
+
+        <div class="video-card" data-category="{{ video[3] }}">
+
+            <video controls width="100%">
+                <source src="{{ url_for('uploaded_file', filename=video[2]) }}">
+            </video>
+
+            <h3>{{ video[1] }}</h3>
+
+            <p><b>Category:</b> {{ video[3] }}</p>
+
+            <a href="/edit/{{ video[0] }}" class="btn edit">
+                ✏ Edit
+            </a>
+
+        </div>
+
+        {% else %}
+
+        <h2>No videos available.</h2>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <h1>📊 Admin Dashboard</h1>
+
+    <p>Welcome, Admin!</p>
+
+    <div class="dashboard-grid">
+
+        <div class="card">
+            <h2>🎥 Upload Video</h2>
+            <p>Add a new Shorts video.</p>
+            <a href="/upload" class="btn">Upload</a>
+        </div>
+
+        <div class="card">
+            <h2>🖼 Video Gallery</h2>
+            <p>View all uploaded videos.</p>
+            <a href="/gallery" class="btn">Open Gallery</a>
+        </div>
+
+        <div class="card">
+            <h2>🔍 Search</h2>
+            <p>Find videos by title.</p>
+            <a href="/search" class="btn">Search</a>
+        </div>
+
+        <div class="card">
+            <h2>📂 Categories</h2>
+            <p>Browse videos by category.</p>
+            <a href="/category" class="btn">Categories</a>
+        </div>
+
+        <div class="card">
+            <h2>⚙ Settings</h2>
+            <p>Project settings (coming soon).</p>
+            <a href="#" class="btn">Settings</a>
+        </div>
+
+        <div class="card">
+            <h2>🚪 Logout</h2>
+            <p>Sign out of the admin panel.</p>
+            <a href="/logout" class="btn logout">Logout</a>
+        </div>
+
+    </div>
+
+</div
+{% endblock %}

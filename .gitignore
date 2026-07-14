@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+uploads/
+# Flask
+instance/
+
+# Virtual environments
+venv/
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploads (optional - don't upload user videos)
+uploads/
+
+# SQLite database (optional if you'll create it on the server)
+database.db

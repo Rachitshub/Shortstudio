@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Video{% endblock %}
+
+{% block content %}
+
+<div class="upload-container">
+
+    <h1>🎥 Upload Shorts</h1>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+
+        <label>Video Title</label>
+        <input
+            type="text"
+            name="title"
+            placeholder="Enter Video Title"
+            required
+        >
+
+        <label>Category</label>
+
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Gaming">Gaming</option>
+            <option value="Status">Status</option>
+            <option value="Education">Education</option>
+            <option value="Technology">Technology</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Music">Music</option>
+            <option value="Vlog">Vlog</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label>Select Video</label>
+
+        <input
+            type="file"
+            name="video"
+            accept="video/*"
+            onchange="previewVideo(this)"
+            required
+        >
+
+        <video
+            id="videoPreview"
+            width="100%"
+            controls
+            style="display:none;margin-top:20px;">
+        </video>
+
+        <br><br>
+
+        <button type="submit">
+            ⬆ Upload Video
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

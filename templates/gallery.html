@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Video Gallery{% endblock %}
+
+{% block content %}
+
+<div class="gallery-container">
+
+    <h1>🎬 Video Gallery</h1>
+
+    <div class="gallery-grid">
+
+        {% for video in videos %}
+
+        <div class="video-card">
+
+            <video controls width="100%">
+                <source src="{{ url_for('uploaded_file', filename=video[2]) }}">
+                Your browser does not support video.
+            </video>
+
+            <h3>{{ video[1] }}</h3>
+
+            <p><b>Category:</b> {{ video[3] }}</p>
+
+            <p>
+                👁 {{ video[5] }}
+                &nbsp;&nbsp;
+                ❤️ {{ video[6] }}
+            </p>
+
+            <div class="button-group">
+
+                <a href="{{ url_for('uploaded_file', filename=video[2]) }}"
+                   download
+                   class="btn">
+                    ⬇ Download
+                </a>
+
+                <a href="/edit/{{ video[0] }}"
+                   class="btn edit">
+                    ✏ Edit
+                </a>
+
+                <a href="/delete/{{ video[0] }}"
+                   class="btn delete"
+                   onclick="return confirmDelete('{{ video[1] }}')">
+                    🗑 Delete
+                </a>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <h2>No videos uploaded.</h2>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
