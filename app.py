@@ -20,6 +20,22 @@ from config import Config
 
 app.config.from_object(Config)
 app.secret_key = Config.SECRET_KEY
+def init_db():
+    conn = sqlite3.connect("database.db")
+    cur = conn.cursor()
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS videos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT,
+        filename TEXT,
+        category TEXT,
+        description TEXT
+    )
+    """)
+    conn.commit()
+    conn.close()
+
+init_db()
 @app.route("/")
 def home():
 
