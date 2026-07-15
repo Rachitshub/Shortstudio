@@ -12,7 +12,7 @@ from flask import (
 import os
 import sqlite3
 from werkzeug.utils import secure_filename
-from config import config
+from config import Config
 
 
 app = Flask(__name__)
@@ -23,7 +23,6 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 app.secret_key = Config.SECRET_KEY
 print("Upload folder:", app.config["UPLOAD_FOLDER"])
 print(app.config["UPLOAD_FOLDER"])
-print(filepath)
 def init_db():
     conn = sqlite3.connect("database.db")
     cur = conn.cursor()
