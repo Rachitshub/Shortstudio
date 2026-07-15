@@ -12,11 +12,11 @@ from flask import (
 import os
 import sqlite3
 from werkzeug.utils import secure_filename
-from config import Config
+from config import config
 
 
 app = Flask(__name__)
-from config import Config
+
 
 app.config.from_object(Config)
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
