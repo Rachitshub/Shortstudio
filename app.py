@@ -100,6 +100,9 @@ def upload():
 
             filename = secure_filename(file.filename)
 
+# Create uploads folder if it doesn't exist
+            os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
             filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
 
             file.save(filepath)
