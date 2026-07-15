@@ -19,6 +19,7 @@ app = Flask(__name__)
 from config import Config
 
 app.config.from_object(Config)
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 app.secret_key = Config.SECRET_KEY
 def init_db():
     conn = sqlite3.connect("database.db")
