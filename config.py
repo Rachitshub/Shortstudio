@@ -20,7 +20,8 @@ class Config:
         "mov",
         "mkv",
         "avi",
-        "webm"
+        "webm",
+        "ts"
     }
 
     # SQLite database
