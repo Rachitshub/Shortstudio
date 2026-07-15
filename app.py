@@ -21,6 +21,7 @@ from config import Config
 app.config.from_object(Config)
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 app.secret_key = Config.SECRET_KEY
+print("Upload folder:", app.config["UPLOAD_FOLDER"])
 print(app.config["UPLOAD_FOLDER"])
 print(filepath)
 def init_db():
