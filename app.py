@@ -13,6 +13,7 @@ import os
 import sqlite3
 from werkzeug.utils import secure_filename
 from config import Config
+import psycopg
 
 
 app = Flask(__name__)
@@ -42,7 +43,8 @@ init_db()
 @app.route("/")
 def home():
 
-    conn = sqlite3.connect("database.db")
+
+    conn = psycopg.connect(os.environ["DATABASE_URL"])
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM videos ORDER BY id DESC")
