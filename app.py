@@ -15,6 +15,24 @@ from werkzeug.utils import secure_filename
 from config import Config
 import psycopg
 
+def init_db():
+    conn = psycopg.connect(os.environ["DATABASE_URL"])
+    cur = conn.cursor()
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS videos (
+        id SERIAL PRIMARY KEY,
+        title TEXT,
+        filename TEXT,
+        category TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+init_db()
+
 
 app = Flask(__name__)
 
