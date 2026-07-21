@@ -32,8 +32,8 @@ class Config:
     ADMIN_PASSWORD = "rptl"
 
     # Contact details
-    PHONE_NUMBER = "++9824932606"
-    WHATSAPP_NUMBER = "919824932606"
+    PHONE_NUMBER = "++9624932606"
+    WHATSAPP_NUMBER = "919624932606"
 
     # Categories
     CATEGORIES = [
