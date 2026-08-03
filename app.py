@@ -9,9 +9,7 @@ from flask import (
     send_from_directory,
     abort
 )
-
 import os
-#import sqlite3
 from werkzeug.utils import secure_filename
 from config import Config
 import psycopg
@@ -33,9 +31,9 @@ def init_db():
     conn.close()
 
 init_db()
-
+DB_URL=os.environ["DATABASE_URL"]
 def get_db_con():
-    return psycopg.connect(os.environ["DATABASE_URL"])
+    return psycopg.connect(DB_URL)
     
  
 app = Flask(__name__)
@@ -247,4 +245,4 @@ import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port,debug=True)
+    app.run(host="0.0.0.0", port=port)
