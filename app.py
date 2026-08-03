@@ -6,11 +6,10 @@ from flask import (
     request,
     redirect,
     session,
-    send_from_directory
+    send_from_directory,
+    abort
 )
-
 import os
-import sqlite3
 from werkzeug.utils import secure_filename
 from config import Config
 import psycopg
@@ -32,8 +31,11 @@ def init_db():
     conn.close()
 
 init_db()
-
-
+DB_URL=os.environ["DATABASE_URL"]
+def get_db_con():
+    return psycopg.connect(DB_URL)
+    
+ 
 app = Flask(__name__)
 
 
@@ -42,37 +44,22 @@ os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 app.secret_key = Config.SECRET_KEY
 print("Upload folder:", app.config["UPLOAD_FOLDER"])
 print(app.config["UPLOAD_FOLDER"])
-def init_db():
-    conn = sqlite3.connect("database.db")
-    cur = conn.cursor()
-    cur.execute("""
-    CREATE TABLE IF NOT EXISTS videos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        filename TEXT,
-        category TEXT,
-        description TEXT
-    )
-    """)
-    conn.commit()
-    conn.close()
-
-init_db()
 @app.route("/")
 def home():
 
 
-    conn = psycopg.connect(os.environ["DATABASE_URL"])
+    conn = get_db_con()
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM videos ORDER BY id DESC")
     videos = cur.fetchall()
 
     conn.close()
-
-    return redirect("/gallery")
-
-    return render_template("index.html", videos=videos)
+    return render_template(
+        "gallery.html",
+        videos=videos
+    )
+    
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -126,14 +113,13 @@ def upload():
 
             file.save(filepath)
 
-            conn = sqlite3.connect("database.db")
+            
+            conn = get_db_con()
             cur = conn.cursor()
-
             cur.execute(
-                "INSERT INTO videos(title,filename,category) VALUES(?,?,?)",
-                (title, filename, category)
-            )
+                "INSERT INTO videos (title, filename, category) VALUES (%s, %s, %s)",(title, filename, category))
 
+            
             conn.commit()
             conn.close()
 
@@ -143,7 +129,7 @@ def upload():
 @app.route("/gallery")
 def gallery():
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_con()
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM videos ORDER BY id DESC")
@@ -163,13 +149,34 @@ def uploaded_file(filename):
         app.config["UPLOAD_FOLDER"],
         filename
     )
+    
+@app.route("/delete/<int:id>")
+def delete_vid(id):
+    if not session.get("admin"):
+        abort(401) ;
+    
+    conn = get_db_con()
+    cur = conn.cursor()
+    cur.execute("SELECT filename FROM videos WHERE id=%s",(id,))
+    filename = cur.fetchone()[0]
+    if not filename :
+        return abort(404)
+    file = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    cur.execute("DELETE FROM videos WHERE id=%s",(id,))
+    conn.commit()
+    if  not os.path.exists(file):
+        return abort(404)
+    os.remove(file)
+    conn.close()
+    return redirect("/")
+        
 @app.route("/edit/<int:video_id>", methods=["GET", "POST"])
 def edit(video_id):
 
     if not session.get("admin"):
         return redirect("/login")
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_con()
     cur = conn.cursor()
 
     if request.method == "POST":
@@ -178,7 +185,7 @@ def edit(video_id):
         category = request.form["category"]
 
         cur.execute(
-            "UPDATE videos SET title=?, category=? WHERE id=?",
+            "UPDATE videos SET title=%s, category=%s WHERE id=%s",
             (title, category, video_id)
         )
 
@@ -188,7 +195,7 @@ def edit(video_id):
         return redirect("/gallery")
 
     cur.execute(
-        "SELECT * FROM videos WHERE id=?",
+        "SELECT * FROM videos WHERE id=%s",
         (video_id,)
     )
 
@@ -203,7 +210,7 @@ def edit(video_id):
 @app.route("/search")
 def search():
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_con()
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM videos ORDER BY title ASC")
@@ -221,7 +228,7 @@ def search():
 @app.route("/category")
 def category():
 
-    conn = sqlite3.connect("database.db")
+    conn = get_db_con()
     cur = conn.cursor()
 
     cur.execute("SELECT * FROM videos ORDER BY category ASC")
